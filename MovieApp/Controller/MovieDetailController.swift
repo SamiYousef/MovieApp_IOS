@@ -81,27 +81,25 @@ class MovieDetailController: UITableViewController {
 
     private func loadTraillers() {
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        TraillerService().getTraillers(movieId: String(movieItem?.id ?? -1)) { (data, errorMessage) in
+        GetTraillers(movieId: String(movieItem?.id ?? -1)).excute(onSuccess: { (response: TraillerResponse) in
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
-            if let traillerList = data {
-                self.traillerList = traillerList
-                self.tableView?.reloadData()
-            } else {
-                print("error Loding : \(errorMessage)")
-            }
+            self.traillerList = response.traillerList
+            self.tableView?.reloadData()
+        }) { (error: Error) in
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            print(error)
         }
     }
 
     private func loadReviews() {
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        ReviewService().getReviews(movieId: String(movieItem?.id ?? -1)) { (data, errorMessage) in
+        GetReviews(movieId: String(movieItem?.id ?? -1)).excute(onSuccess: { (response: ReviewResponse) in
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
-            if let reviewList = data {
-                self.reviewList = reviewList
-                self.tableView?.reloadData()
-            } else {
-                print("error Loding : \(errorMessage)")
-            }
+            self.reviewList = response.results
+            self.tableView?.reloadData()
+        }) { (error: Error) in
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            print(error)
         }
     }
 

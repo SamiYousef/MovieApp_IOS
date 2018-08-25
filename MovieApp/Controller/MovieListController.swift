@@ -11,8 +11,6 @@ import UIKit
 class MovieListController: UICollectionViewController {
 
     private var movieList = [MovieObj]()
-    private var queryService = QueryService()
-
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -29,14 +27,13 @@ class MovieListController: UICollectionViewController {
 
     private func fetchMovieList() {
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        queryService.getMovieList { (results, errorMessage) in
+        GetMovieList().excute(onSuccess: { (movieResponse: MovieResponse) in
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
-            if let movieList = results {
-                self.movieList = movieList
-                self.collectionView?.reloadData()
-            } else {
-                print("error Loding : \(errorMessage)")
-            }
+            self.movieList = movieResponse.results
+            self.collectionView?.reloadData()
+        }) { (error: Error) in
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            print(error)
         }
     }
 
@@ -55,7 +52,6 @@ class MovieListController: UICollectionViewController {
         detailController.movieItem = movieList[indexPath.row]
         self.navigationController?.pushViewController(detailController, animated: true)
     }
-
 
 }
 
