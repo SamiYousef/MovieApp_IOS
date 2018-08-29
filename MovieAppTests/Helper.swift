@@ -14,10 +14,10 @@ public enum FileType: String {
 }
 
 extension XCTestCase {
-    func generateMockDispatcher(request: RequestData, data: Data) -> NetworkDispatcher {
+    func generateMockSession(request: RequestData, data: Data) -> DHURLSession {
         let urlResponse = HTTPURLResponse(url: URL(string: request.path)!, statusCode: 200, httpVersion: nil, headerFields: nil)
         let sessionMock = URLSessionMock(data: data, response: urlResponse, error: nil)
-        return URLSessionNetworkDispatcher(session: sessionMock)
+        return sessionMock
     }
 
     func fetchMockData(fileName: String, type: FileType) -> Data? {

@@ -33,58 +33,35 @@ class MovieAppTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
-
+/*
     func testMovieListApi() {
         //given
         let session = URLSession.shared
-        let sessionDispatcher = URLSessionNetworkDispatcher(session: session)
-        let expect = expectation(description: "Data fetched successfully ...!")
-
-        var movieResponse: MovieResponse?
-        var errorResponse: Error?
+        let mockObj = MockMovieList()
 
         //when
-        MockMovieList().excute(dispatcher: sessionDispatcher, onSuccess: { (response) in
-            movieResponse = response
-            expect.fulfill()
-        }) { (error) in
-            errorResponse = error
-            expect.fulfill()
+        testNetworkApi(session: session, mockObj: mockObj) { (response, error) in
+            //then
+            XCTAssertNil(error, "Request failed ..!")
+            XCTAssertNotNil(response, "Failed to fetch movieResponse ..!")
         }
-        waitForExpectations(timeout: 5, handler: nil)
-        //then
-        XCTAssertNil(errorResponse, "Request failed ..!")
-        XCTAssertNotNil(movieResponse, "Failed to fetch movieResponse ..!")
     }
-
+*/
     func testMockMovieListApi() {
         // given
         guard let popularData = fetchMockData(fileName: "popular", type: .json) else {
             XCTFail("Failed loading data ...!")
             return
         }
-
         let mockObj = MockMovieList()
-        let expect = expectation(description: "Data fetched successfully ...!")
-        let dispatcher = generateMockDispatcher(request: mockObj.data, data: popularData)
+        let mockSession = generateMockSession(request: mockObj.data, data: popularData)
 
-        var movieResponse: MovieResponse?
-        var errorResponse: Error?
-
-        //when
-        mockObj.excute(dispatcher: dispatcher, onSuccess: { (response) in
-            movieResponse = response
-            expect.fulfill()
-        }) { (error) in
-            errorResponse = error
-            expect.fulfill()
+        testNetworkApi(session: mockSession, mockObj: mockObj) { (resonse, error) in
+            //then
+            XCTAssertNil(error, "Request failed ..!")
+            XCTAssertNotNil(resonse, "Failed to fetch movieResponse ..!")
+            XCTAssertEqual(resonse?.results.count, 20)
         }
-        waitForExpectations(timeout: 1, handler: nil)
-
-        //then
-        XCTAssertNil(errorResponse, "Request failed ..!")
-        XCTAssertNotNil(movieResponse, "Failed to fetch movieResponse ..!")
-        XCTAssertEqual(movieResponse?.results.count, 20)
     }
 
     func testPerformanceExample() {
