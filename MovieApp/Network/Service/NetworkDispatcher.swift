@@ -14,8 +14,10 @@ protocol NetworkDispatcher {
 
 struct URLSessionNetworkDispatcher: NetworkDispatcher {
 
-    public static let instance = URLSessionNetworkDispatcher()
-    private init() {}
+    private let session: DHURLSession
+    init(session: DHURLSession) {
+        self.session = session
+    }
 
     func dispatch(request: RequestData, onSuccess: @escaping (Data) -> Void, onError: @escaping (Error) -> Void) {
         guard let url = URL(string: request.path) else {
@@ -34,7 +36,7 @@ struct URLSessionNetworkDispatcher: NetworkDispatcher {
             return
         }
 
-        URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
+        session.dataTask(with: urlRequest) { (data, response, error) in
             if let error = error {
                 onError(error)
                 return

@@ -11,6 +11,7 @@ import UIKit
 class MovieListController: UICollectionViewController {
 
     private var movieList = [MovieObj]()
+    var networkDispatcher = URLSessionNetworkDispatcher(session: URLSession.shared)
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -27,7 +28,7 @@ class MovieListController: UICollectionViewController {
 
     private func fetchMovieList() {
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        GetMovieList().excute(onSuccess: { (movieResponse: MovieResponse) in
+        GetMovieList().excute(dispatcher: networkDispatcher, onSuccess: { (movieResponse: MovieResponse) in
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
             self.movieList = movieResponse.results
             self.collectionView?.reloadData()

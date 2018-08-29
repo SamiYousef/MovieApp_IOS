@@ -15,6 +15,7 @@ enum TableCellType {
 
 class MovieDetailController: UITableViewController {
 
+    var networkDispatcher = URLSessionNetworkDispatcher(session: URLSession.shared)
     var movieItem: MovieObj?
     private var traillerList: [TraillerObj] = []
     private var reviewList: [ReviewObj] = []
@@ -81,7 +82,7 @@ class MovieDetailController: UITableViewController {
 
     private func loadTraillers() {
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        GetTraillers(movieId: String(movieItem?.id ?? -1)).excute(onSuccess: { (response: TraillerResponse) in
+        GetTraillers(movieId: String(movieItem?.id ?? -1)).excute(dispatcher: networkDispatcher, onSuccess: { (response: TraillerResponse) in
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
             self.traillerList = response.traillerList
             self.tableView?.reloadData()
@@ -93,7 +94,7 @@ class MovieDetailController: UITableViewController {
 
     private func loadReviews() {
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        GetReviews(movieId: String(movieItem?.id ?? -1)).excute(onSuccess: { (response: ReviewResponse) in
+        GetReviews(movieId: String(movieItem?.id ?? -1)).excute(dispatcher: networkDispatcher, onSuccess: { (response: ReviewResponse) in
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
             self.reviewList = response.results
             self.tableView?.reloadData()

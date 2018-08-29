@@ -14,7 +14,7 @@ protocol RequestType {
 }
 
 extension RequestType {
-    func excute(dispatcher: NetworkDispatcher = URLSessionNetworkDispatcher.instance,
+    func excute(dispatcher: NetworkDispatcher,
                 onSuccess: @escaping (ResponseType) -> Void,
                 onError: @escaping (Error) -> Void) {
         dispatcher.dispatch(request: data, onSuccess: { (responseData: Data) in
