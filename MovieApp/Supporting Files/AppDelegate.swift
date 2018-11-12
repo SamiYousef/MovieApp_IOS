@@ -13,8 +13,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        let movieListController = MovieListController(collectionViewLayout: UICollectionViewFlowLayout())
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        let movieListController = ListMoviesViewController(collectionViewLayout: UICollectionViewFlowLayout())//MovieListController
         let navigationController = UINavigationController(rootViewController: movieListController)
         navigationController.view.backgroundColor = .white
         window = UIWindow()

@@ -30,7 +30,7 @@ class MovieDetailController: UITableViewController {
         self.tableView.separatorStyle = .none
         self.tableView.tableFooterView = UIView()
 
-        NotificationCenter.default.addObserver(self, selector: #selector(orientationChanged), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(orientationChanged), name: UIDevice.orientationDidChangeNotification, object: nil)
         loadTraillers()
         loadReviews()
     }
