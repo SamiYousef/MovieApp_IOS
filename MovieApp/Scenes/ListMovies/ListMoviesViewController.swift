@@ -77,7 +77,7 @@ class ListMoviesViewController: UICollectionViewController, ListMoviesDisplayLog
 
     // MARK: Do something
 
-    private var movieList = [MovieObj]()
+    private(set) var movieList = [MovieObj]()
 
     //@IBOutlet weak var nameTextField: UITextField!
 
@@ -104,9 +104,7 @@ extension ListMoviesViewController {
     }
 
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let detailController = MovieDetailController()
-        detailController.movieItem = movieList[indexPath.row]
-        self.navigationController?.pushViewController(detailController, animated: true)
+        router?.navigateToDetails()
     }
 }
 
